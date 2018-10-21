@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'channels',
     'news',
 ]
 
@@ -140,6 +141,14 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.AllowAny',
     ),
 
+}
+
+# Channels
+ASGI_APPLICATION = 'nbanews.routing.application'
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer",
+    },
 }
 
 #logging

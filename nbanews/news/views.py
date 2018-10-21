@@ -5,7 +5,6 @@ from django.forms.models import model_to_dict
 import requests
 from bs4 import BeautifulSoup
 from news.models import News
-from news import tasks
 
 def get_newsContent():
     
@@ -40,7 +39,7 @@ def get_newsContent():
             newsContent.append(newsObj)
         
         
-        logger.debug( newsContent )
+        #logger.debug( newsContent )
         
     except Exception as e:
         
@@ -58,8 +57,6 @@ def index(request):
     
     title = 'NICE TO MEET YOU'
     pageName = 'NBA新聞'
-    
-    tasks.add(1, 2)
     
     return render(request, 'news/index.html',
     {        
@@ -118,6 +115,23 @@ def demo_three(request):
     pageName = '3.使用 Django REST Framework 配合 AJAX 實現以下頁面 : 焦點新聞列表、新聞詳情頁面'
     
     return render(request, 'news/demo_3.html',
+    {        
+            'title': title,
+            'pageName': pageName, 
+            
+    })
+    
+'''
+4.進階要求
+        實現爬蟲自動定時抓取。
+        每當抓取到新的新聞時立即通知頁面。
+'''
+def demo_four(request):
+    
+    title = 'NICE TO MEET YOU'
+    pageName = '4.進階要求 : 實現爬蟲自動定時抓取、每當抓取到新的新聞時立即通知頁面'
+    
+    return render(request, 'news/demo_4.html',
     {        
             'title': title,
             'pageName': pageName, 

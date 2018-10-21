@@ -12,6 +12,10 @@ from news.newsSerializers import newsSerializer
 from news.models import News
 from rest_framework import viewsets, mixins
 from rest_framework.response import Response
+from rest_framework.decorators import action
+#web socket use
+from asgiref.sync import async_to_sync
+from channels.layers import get_channel_layer
 
 
 
@@ -25,6 +29,8 @@ class newsViewSet(
         '/' - get : 查詢資料
         
         '/{id}/' - get : 檢視
+        
+        '/refresh/' - post : 重新整理(發送websocket)
         
     '''
 
@@ -76,6 +82,21 @@ class newsViewSet(
         finally:
         
             return Response( result )
+        
+    @action( methods=[ 'post' ], detail=False)
+    def refresh(self, request ):
+        
+        '''
+            refresh : send websocket
+        '''
+        
+        #送web socket(call url)
+        channelLayer = get_channel_layer()
+        #送websocket到首頁(refresh)
+        async_to_sync(channelLayer.group_send)( 'index', {'type' : 'chat_message', 'message' : 'refresh' } )
+        
+        return Response( True )
+    
     
     
 
